@@ -1,0 +1,53 @@
+{
+  "timestamp": "2026-10-09T19:00:30.348Z",
+  "account_number": "105794411668",
+  "checks": [
+    {
+      "name": "Saldo final central",
+      "passed": true,
+      "balance": "700.00"
+    },
+    {
+      "name": "Repetición idempotente sin segundo retiro",
+      "passed": true,
+      "status": 200,
+      "transaction_id": "1337a78a-acac-42b2-bf73-9f3b5d8e1d1a"
+    },
+    {
+      "name": "Conflicto de idempotencia",
+      "passed": true,
+      "status": 409
+    },
+    {
+      "name": "Saldo insuficiente",
+      "passed": true,
+      "status": 409
+    },
+    {
+      "name": "API key inválida",
+      "passed": true,
+      "status": 401
+    },
+    {
+      "name": "PIN inválido",
+      "passed": true,
+      "status": 401
+    },
+    {
+      "name": "Historial rechazó UPDATE",
+      "passed": true
+    },
+    {
+      "name": "Historial rechazó DELETE",
+      "passed": true
+    },
+    {
+      "name": "Saldo permaneció en $700 después de las pruebas",
+      "passed": true
+    },
+    {
+      "name": "Retiro persistido en Supabase ATM/Sucursal",
+      "passed": true
+    }
+  ]
+}
