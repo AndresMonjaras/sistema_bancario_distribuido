@@ -2,6 +2,16 @@
 
 Nosotros implementamos tres nodos bancarios independientes y utilizamos dos proyectos Supabase para separar los datos maestros del banco de la persistencia operativa de sucursales y cajeros. La prueba integrada registró una cuenta con $1,000.00, ejecutó un retiro de $300.00 y comprobó el saldo central de $700.00.
 
+## Integrantes y perfiles de GitHub
+
+| Andrés Monjaras | Omar | Dennis |
+|---|---|---|
+| [![Perfil de Andrés](https://github.com/AndresMonjaras.png?size=80)](https://github.com/AndresMonjaras) | [![Perfil de Omar](https://avatars.githubusercontent.com/u/147902448?s=80)](https://github.com/omarsyn) | [![Perfil de Dennis](https://avatars.githubusercontent.com/u/131335019?s=80)](https://github.com/DennisQuintanaL) |
+| [@AndresMonjaras](https://github.com/AndresMonjaras) | [@omarsyn](https://github.com/omarsyn) | [@DennisQuintanaL](https://github.com/DennisQuintanaL) |
+| Banco central | Sucursal | Cajero automático |
+
+GitHub reconoció los commits de cada integrante con su perfil. Conservamos el [commit de Omar](https://github.com/AndresMonjaras/sistema_bancario_distribuido/commit/96d4c226992b5b22544c5830647a2e25d050dd74) y el [commit de Dennis](https://github.com/AndresMonjaras/sistema_bancario_distribuido/commit/38690cc38f740ebd5c2e6780dfee16b42d95cacf), creados desde sus respectivos usuarios y máquinas. Los integrantes también aparecen en [Contributors](https://github.com/AndresMonjaras/sistema_bancario_distribuido/graphs/contributors).
+
 ## Distribución de los nodos
 
 | Integrante y entorno | Nodo | Tecnología | Módulo | Responsabilidad |
