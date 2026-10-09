@@ -2,6 +2,16 @@
 
 Nosotros implementamos tres nodos bancarios independientes y utilizamos dos proyectos Supabase para separar los datos maestros del banco de la persistencia operativa de sucursales y cajeros. La prueba integrada registró una cuenta con $1,000.00, ejecutó un retiro de $300.00 y comprobó el saldo central de $700.00.
 
+## Integrantes y perfiles de GitHub
+
+| Andrés Monjaras | Omar | Dennis |
+|---|---|---|
+| [![Perfil de Andrés](https://github.com/AndresMonjaras.png?size=80)](https://github.com/AndresMonjaras) | [![Perfil de Omar](https://avatars.githubusercontent.com/u/147902448?s=80)](https://github.com/omarsyn) | [![Perfil de Dennis](https://avatars.githubusercontent.com/u/131335019?s=80)](https://github.com/DennisQuintanaL) |
+| [@AndresMonjaras](https://github.com/AndresMonjaras) | [@omarsyn](https://github.com/omarsyn) | [@DennisQuintanaL](https://github.com/DennisQuintanaL) |
+| Banco central | Sucursal | Cajero automático |
+
+GitHub reconoció los commits de cada integrante con su perfil. Conservamos el [commit de Omar](https://github.com/AndresMonjaras/sistema_bancario_distribuido/commit/96d4c226992b5b22544c5830647a2e25d050dd74) y el [commit de Dennis](https://github.com/AndresMonjaras/sistema_bancario_distribuido/commit/38690cc38f740ebd5c2e6780dfee16b42d95cacf), creados desde sus respectivos usuarios y máquinas. Los integrantes también aparecen en [Contributors](https://github.com/AndresMonjaras/sistema_bancario_distribuido/graphs/contributors).
+
 ## Distribución de los nodos
 
 | Integrante y entorno | Nodo | Tecnología | Módulo | Responsabilidad |
@@ -56,7 +66,7 @@ La configuración de Vercel correspondió a importar este repositorio, elegir `c
 
 Destinamos **la sucursal Laravel** al despliegue autoalojado con Coolify. Preparamos `sucursal/Dockerfile` para instalar PHP, Composer y PostgreSQL, ejecutar migraciones e iniciar el servicio. La configuración correspondió a conectar este repositorio, usar `/sucursal` como raíz, seleccionar Dockerfile y exponer el puerto `8001`.
 
-Durante la integración encontramos problemas con la instancia disponible de Coolify y, por indicación del equipo, **elegimos Render como alternativa**. Conservamos el mismo Dockerfile para un Web Service Docker con raíz `sucursal`. **Los enlaces públicos de Coolify/Render quedaron pendientes de verificación; no formaron parte de las capturas de funcionamiento.**
+Durante la integración encontramos problemas con la instancia disponible de Coolify y, por indicación del equipo, **elegimos Render como alternativa**. Conservamos el mismo Dockerfile para un Web Service Docker con raíz `sucursal` y añadimos `render.yaml` para la configuración mediante Blueprint. **Los enlaces públicos de Coolify/Render quedaron pendientes de verificación; no formaron parte de las capturas de funcionamiento.**
 
 ## Repositorio y despliegue continuo
 
@@ -66,15 +76,24 @@ Organizamos los tres módulos en el repositorio [sistema_bancario_distribuido](h
 
 Nosotros abrimos la cuenta desde la máquina de sucursal, verificamos el saldo inicial en central, ingresamos al ATM y ejecutamos el retiro. Comprobamos el saldo final de $700.00 en el banco central y consultamos el historial con el depósito inicial y el retiro.
 
-La documentación funcional con capturas y pies de imagen quedó en [entrega_examen/README.md](entrega_examen/README.md). También generamos [la versión Word](entrega_examen/Documentacion_funcional.docx) y [la versión HTML](entrega_examen/Documentacion_funcional.html).
-
 ## Contratos y código
 
-- [Contrato de endpoints](entrega_examen/contratos/ENDPOINTS.md).
-- OpenAPI de cada nodo en `entrega_examen/contratos/`.
+- [OpenAPI del banco central](contratos/banco-central.openapi.yaml).
+- [OpenAPI de la sucursal](contratos/sucursal.openapi.yaml).
+- [OpenAPI del cajero](contratos/cajero.openapi.yaml).
 - `banco-central/`: Laravel y migraciones del núcleo.
 - `sucursal/`: Laravel y registro local de sucursal.
 - `cajero/`: Express, interfaz y configuración Vercel.
 - `scripts/`: herramientas de verificación y generación de evidencias.
 
 Los archivos `.env`, las claves y los datos de conexión se excluyeron del repositorio. Los ejemplos de configuración se incluyeron como `.env.example`.
+
+## Enlaces y estado de las aplicaciones
+
+| Aplicación | Enlace / estado |
+|---|---|
+| Banco central | [Panel HTTPS](https://incurred-paper-occupational-isa.trycloudflare.com) — salud verificada con Supabase |
+| ATM en Vercel | Configuración preparada; publicación pendiente |
+| Sucursal en Render | Dockerfile y Blueprint preparados; publicación pendiente |
+
+La dirección central fue temporal y requirió mantener activo el servicio en la máquina de Andrés.

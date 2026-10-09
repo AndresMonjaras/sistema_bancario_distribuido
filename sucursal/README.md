@@ -6,4 +6,4 @@ Instalación: `composer install`; copiar `.env.example` a `.env`; configurar Pos
 
 El Dockerfile permite desplegar la sucursal en Coolify o Render con puerto `8001`. La configuración privada se guarda cifrada en el servidor; en Docker debe conservarse `storage/` como volumen si se configura desde el panel.
 
-Contrato: `../entrega_examen/contratos/sucursal.openapi.yaml`.
+Contrato: [OpenAPI de la sucursal](../contratos/sucursal.openapi.yaml).
