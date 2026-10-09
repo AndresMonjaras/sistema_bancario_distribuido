@@ -1,0 +1,485 @@
+openapi: 3.1.0
+info:
+  title: Cajero — Express
+  version: 1.0.0
+  description: Sistema Bancario Distribuido. JSON, MXN; las operaciones monetarias
+    utilizan idempotencia.
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Entorno del nodo
+paths:
+  /health:
+    get:
+      summary: Salud
+      operationId: get__health
+      security: []
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /csrf:
+    get:
+      summary: Token CSRF
+      operationId: get__csrf
+      security: []
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /auth/login:
+    post:
+      summary: Iniciar sesión administrativa
+      operationId: post__auth_login
+      security: []
+      parameters:
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  writeOnly: true
+  /auth/logout:
+    post:
+      summary: Cerrar sesión
+      operationId: post__auth_logout
+      security:
+        - Session: []
+      parameters:
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /config:
+    get:
+      summary: Consultar configuración sin revelar key
+      operationId: get__config
+      security:
+        - Session: []
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Guardar y verificar API key
+      operationId: put__config
+      security:
+        - Session: []
+      parameters:
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - central_url
+                - api_key
+              properties:
+                central_url:
+                  type: string
+                  format: uri
+                api_key:
+                  type: string
+                  writeOnly: true
+  /node:
+    get:
+      summary: Efectivo y disponibilidad
+      operationId: get__node
+      security: []
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /customer/login:
+    post:
+      summary: Autenticar cliente con cuenta/PIN
+      operationId: post__customer_login
+      security: []
+      parameters:
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - account_number
+                - pin
+              properties:
+                account_number:
+                  type: string
+                  pattern: ^\d{12}$
+                pin:
+                  type: string
+                  pattern: ^\d{4}$
+                  writeOnly: true
+  /customer/logout:
+    post:
+      summary: Finalizar sesión de cliente
+      operationId: post__customer_logout
+      security:
+        - Session: []
+      parameters:
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /balance:
+    get:
+      summary: Saldo del cliente autenticado
+      operationId: get__balance
+      security:
+        - Session: []
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /withdrawals:
+    post:
+      summary: Operación del cliente autenticado
+      operationId: post__withdrawals
+      security:
+        - Session: []
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "201":
+          description: Operación creada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+              properties:
+                amount: &a1
+                  oneOf:
+                    - type: string
+                      pattern: ^\d+(\.\d{1,2})?$
+                    - type: number
+                      exclusiveMinimum: 0
+                  description: Monto MXN; hasta dos decimales
+  /deposits:
+    post:
+      summary: Operación del cliente autenticado
+      operationId: post__deposits
+      security:
+        - Session: []
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "201":
+          description: Operación creada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+              properties:
+                amount: *a1
+  /transfers:
+    post:
+      summary: Operación del cliente autenticado
+      operationId: post__transfers
+      security:
+        - Session: []
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "201":
+          description: Operación creada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - destination_account
+                - amount
+              properties:
+                destination_account:
+                  type: string
+                  pattern: ^\d{12}$
+                amount: *a1
+  /transactions:
+    get:
+      summary: Historial del cliente o administrador
+      operationId: get__transactions
+      security:
+        - Session: []
+      parameters:
+        - name: account_number
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  securitySchemes:
+    Session:
+      type: apiKey
+      in: cookie
+      name: atm_session
+    NodeKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    AccountPin:
+      type: apiKey
+      in: header
+      name: X-Account-Pin
+    AdminToken:
+      type: http
+      scheme: bearer
+  schemas:
+    Success:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          description: Resultado de la operación
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+            message:
+              type: string

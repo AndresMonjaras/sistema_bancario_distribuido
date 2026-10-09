@@ -1,0 +1,1 @@
+{"name":"bank-verification","private":true,"type":"module","dependencies":{"pg":"^8.16.3","playwright-core":"^1.56.0","yaml":"^2.8.1"}}

@@ -1,0 +1,380 @@
+openapi: 3.1.0
+info:
+  title: Sucursal — Laravel
+  version: 1.0.0
+  description: Sistema Bancario Distribuido. JSON, MXN; las operaciones monetarias
+    utilizan idempotencia.
+servers:
+  - url: http://localhost:8001/api/v1
+    description: Entorno del nodo
+paths:
+  /health:
+    get:
+      summary: Salud
+      operationId: get__health
+      security: []
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /csrf:
+    get:
+      summary: Token CSRF
+      operationId: get__csrf
+      security: []
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /auth/login:
+    post:
+      summary: Iniciar sesión administrativa
+      operationId: post__auth_login
+      security: []
+      parameters:
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  writeOnly: true
+  /auth/logout:
+    post:
+      summary: Cerrar sesión
+      operationId: post__auth_logout
+      security:
+        - Session: []
+      parameters:
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /config:
+    get:
+      summary: Consultar configuración sin revelar key
+      operationId: get__config
+      security:
+        - Session: []
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Guardar y verificar API key
+      operationId: put__config
+      security:
+        - Session: []
+      parameters:
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - central_url
+                - api_key
+              properties:
+                central_url:
+                  type: string
+                  format: uri
+                api_key:
+                  type: string
+                  writeOnly: true
+  /dashboard:
+    get:
+      summary: Resumen de sucursal
+      operationId: get__dashboard
+      security:
+        - Session: []
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /accounts:
+    get:
+      summary: Cuentas de la sucursal
+      operationId: get__accounts
+      security:
+        - Session: []
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Registrar cliente en central
+      operationId: post__accounts
+      security:
+        - Session: []
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-CSRF-TOKEN
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        "201":
+          description: Operación creada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - holder_name
+                - initial_balance
+                - pin
+              properties:
+                holder_name:
+                  type: string
+                  maxLength: 120
+                initial_balance:
+                  type:
+                    - string
+                    - number
+                pin:
+                  type: string
+                  pattern: ^\d{4}$
+                  writeOnly: true
+  /transactions:
+    get:
+      summary: Historial y reporte local
+      operationId: get__transactions
+      security:
+        - Session: []
+      parameters:
+        - name: account_number
+          in: query
+          schema:
+            type: string
+        - name: from
+          in: query
+          schema:
+            type: string
+        - name: to
+          in: query
+          schema:
+            type: string
+        - name: type
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /reports:
+    get:
+      summary: Historial y reporte local
+      operationId: get__reports
+      security:
+        - Session: []
+      parameters:
+        - name: account_number
+          in: query
+          schema:
+            type: string
+        - name: from
+          in: query
+          schema:
+            type: string
+        - name: to
+          in: query
+          schema:
+            type: string
+        - name: format
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Consulta o repetición idempotente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Success"
+            text/csv:
+              schema:
+                type: string
+        default:
+          description: Error de validación, autorización, fondos, efectivo o disponibilidad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  securitySchemes:
+    Session:
+      type: apiKey
+      in: cookie
+      name: sucursal_session
+    NodeKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    AccountPin:
+      type: apiKey
+      in: header
+      name: X-Account-Pin
+    AdminToken:
+      type: http
+      scheme: bearer
+  schemas:
+    Success:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          description: Resultado de la operación
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+            message:
+              type: string

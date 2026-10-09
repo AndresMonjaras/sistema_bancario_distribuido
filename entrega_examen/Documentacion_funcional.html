@@ -1,0 +1,41 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Sistema Bancario Distribuido</title><style>body{font:15px/1.6 Arial,sans-serif;max-width:1000px;margin:32px auto;color:#16324b}h1,h2{color:#102a43}figure{margin:20px 0;page-break-inside:avoid}img{width:100%;border:1px solid #dce5ec}figcaption{font-size:12px;text-align:center;color:#536b7b;margin-top:8px}@media print{body{margin:0}h2{break-before:page}a{color:inherit}}</style><body>
+<h1>Sistema Bancario Distribuido</h1>
+<p>Examen práctico — 9 de octubre de 2026</p>
+<p>Nosotros implementamos un banco central con Laravel, una sucursal con Laravel y un cajero automático con Express.js. Ejecutamos cada componente en su entorno y utilizamos dos proyectos de Supabase: uno para las cuentas, los saldos y el historial central, y otro para los registros locales de sucursal y cajero.</p>
+<h2>Administración del banco central</h2>
+<p>Nosotros registramos la Sucursal Centro y el Cajero Principal, asignamos responsables y distribuimos su efectivo inicial. La sucursal recibió $5,000.00 y el cajero recibió $2,000.00. Generamos una API key individual para conectar cada nodo con el banco central.</p>
+<figure><img src="capturas/01-nodos-central.png" alt="Nodos registrados en el banco central">
+<figcaption>Figura 1. Nosotros registramos los nodos, sus responsables y el efectivo disponible desde el panel del banco central.</figcaption></figure>
+<h2>Apertura de cuentas en la sucursal</h2>
+<p>Nosotros utilizamos el panel de la sucursal para registrar el nombre del cliente, el saldo inicial y su PIN. El formulario comunicó la operación al banco central.</p>
+<figure><img src="capturas/02-apertura-sucursal.png" alt="Formulario de apertura de cuenta">
+<figcaption>Figura 2. Nosotros accedimos al formulario de apertura de cuentas desde el entorno de la sucursal.</figcaption></figure>
+<p>Nosotros creamos la cuenta del Cliente Demostración con un saldo inicial de $1,000.00. El sistema devolvió el número de cuenta y mostró la confirmación de apertura.</p>
+<figure><img src="capturas/03-cuenta-creada.png" alt="Cuenta creada desde la sucursal">
+<figcaption>Figura 3. Nosotros registramos al cliente con $1,000.00 y recibimos la confirmación de la cuenta central.</figcaption></figure>
+<h2>Verificación de la cuenta central</h2>
+<p>Nosotros consultamos las cuentas desde el banco central y comprobamos que la cuenta creada por la sucursal apareció como activa, con el titular y el saldo inicial correctos.</p>
+<figure><img src="capturas/04-cuenta-central-inicial.png" alt="Cuenta y saldo inicial en banco central">
+<figcaption>Figura 4. Nosotros verificamos la cuenta y su saldo inicial de $1,000.00 en el panel central.</figcaption></figure>
+<h2>Operaciones del cajero automático</h2>
+<p>Nosotros ingresamos al cajero con el número de cuenta y el PIN del cliente. Consultamos el saldo central y accedimos a las opciones de retiro, depósito y transferencia.</p>
+<figure><img src="capturas/05-saldo-atm-inicial.png" alt="Saldo inicial consultado desde el ATM">
+<figcaption>Figura 5. Nosotros consultamos desde el cajero el saldo disponible de $1,000.00.</figcaption></figure>
+<p>Nosotros seleccionamos la operación de retiro e ingresamos un monto de $300.00. El cajero verificó el efectivo disponible y solicitó la autorización al banco central.</p>
+<figure><img src="capturas/06-retiro-atm.png" alt="Retiro de 300 pesos">
+<figcaption>Figura 6. Nosotros solicitamos el retiro de $300.00 desde la interfaz del cajero.</figcaption></figure>
+<p>Nosotros recibimos el comprobante del retiro, su folio y el saldo actualizado de $700.00. El sistema registró la operación central y descontó el efectivo correspondiente del cajero.</p>
+<figure><img src="capturas/07-comprobante-retiro.png" alt="Comprobante del retiro y saldo de 700 pesos">
+<figcaption>Figura 7. Nosotros confirmamos el retiro de $300.00 y observamos el saldo central actualizado a $700.00.</figcaption></figure>
+<h2>Consistencia de saldos</h2>
+<p>Nosotros regresamos al panel central y comprobamos que el saldo de la misma cuenta fue $700.00 después del retiro. La información coincidió con el comprobante mostrado por el cajero.</p>
+<figure><img src="capturas/08-saldo-central-final.png" alt="Saldo final en banco central">
+<figcaption>Figura 8. Nosotros comprobamos la consistencia del saldo final de $700.00 en el banco central.</figcaption></figure>
+<h2>Historial y reportes</h2>
+<p>Nosotros consultamos el historial global y observamos el depósito inicial de $1,000.00 realizado desde la sucursal y el retiro de $300.00 realizado desde el cajero. El panel mostró la fecha, el nodo, el tipo, la cuenta, el monto, el saldo posterior y el identificador de integridad de cada registro. También dispusimos de la opción para descargar el reporte en CSV.</p>
+<figure><img src="capturas/09-historial-central.png" alt="Historial global de operaciones">
+<figcaption>Figura 9. Nosotros consultamos las dos operaciones registradas y sus saldos posteriores desde el historial central.</figcaption></figure>
+<h2>Resultado de la prueba de integración</h2>
+<p>Nosotros completamos la prueba de apertura de cuenta, consulta y retiro entre los tres componentes. El saldo inicial fue $1,000.00; el retiro fue $300.00; y el saldo final comprobado fue $700.00. Utilizamos esta secuencia únicamente como prueba de integración.</p>
+<p>El contrato de endpoints quedó incluido en [contratos/ENDPOINTS.md](contratos/ENDPOINTS.md). Los archivos OpenAPI describieron las interfaces de cada nodo: [Banco central](contratos/banco-central.openapi.yaml), [Sucursal](contratos/sucursal.openapi.yaml) y [Cajero](contratos/cajero.openapi.yaml).</p>
+</body></html>

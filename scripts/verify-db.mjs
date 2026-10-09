@@ -1,0 +1,3 @@
+import pg from 'pg';import fs from 'node:fs';
+const c=JSON.parse(fs.readFileSync(new URL('../.runtime/connections.json',import.meta.url)));
+for(const name of ['central_db','nodes_db']){const cfg=c[name];const db=new pg.Client({host:cfg.host,user:cfg.user,password:cfg.password,database:'postgres',port:5432,ssl:{rejectUnauthorized:false},connectionTimeoutMillis:10000});await db.connect();console.log(name,(await db.query("select tablename,rowsecurity from pg_tables where schemaname='public' order by tablename")).rows);console.log('triggers',(await db.query("select trigger_name,event_manipulation from information_schema.triggers where event_object_schema='public'")).rows);await db.end();}
