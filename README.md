@@ -56,7 +56,7 @@ La configuración de Vercel correspondió a importar este repositorio, elegir `c
 
 Destinamos **la sucursal Laravel** al despliegue autoalojado con Coolify. Preparamos `sucursal/Dockerfile` para instalar PHP, Composer y PostgreSQL, ejecutar migraciones e iniciar el servicio. La configuración correspondió a conectar este repositorio, usar `/sucursal` como raíz, seleccionar Dockerfile y exponer el puerto `8001`.
 
-Durante la integración encontramos problemas con la instancia disponible de Coolify y, por indicación del equipo, **elegimos Render como alternativa**. Conservamos el mismo Dockerfile para un Web Service Docker con raíz `sucursal`. **Los enlaces públicos de Coolify/Render quedaron pendientes de verificación; no formaron parte de las capturas de funcionamiento.**
+Durante la integración encontramos problemas con la instancia disponible de Coolify y, por indicación del equipo, **elegimos Render como alternativa**. Conservamos el mismo Dockerfile para un Web Service Docker con raíz `sucursal` y añadimos `render.yaml` para la configuración mediante Blueprint. **Los enlaces públicos de Coolify/Render quedaron pendientes de verificación; no formaron parte de las capturas de funcionamiento.**
 
 ## Repositorio y despliegue continuo
 
@@ -78,3 +78,13 @@ La documentación funcional con capturas y pies de imagen quedó en [entrega_exa
 - `scripts/`: herramientas de verificación y generación de evidencias.
 
 Los archivos `.env`, las claves y los datos de conexión se excluyeron del repositorio. Los ejemplos de configuración se incluyeron como `.env.example`.
+
+## Enlaces y estado de las aplicaciones
+
+| Aplicación | Enlace / estado |
+|---|---|
+| Banco central | [Panel HTTPS](https://incurred-paper-occupational-isa.trycloudflare.com) — salud verificada con Supabase |
+| ATM en Vercel | Configuración preparada; publicación pendiente |
+| Sucursal en Render | Dockerfile y Blueprint preparados; publicación pendiente |
+
+La dirección central fue temporal y requirió mantener activo el servicio en la máquina de Andrés.

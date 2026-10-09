@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: sucursal-eqm
+    runtime: docker
+    dockerfilePath: ./sucursal/Dockerfile
+    dockerContext: ./sucursal
+    plan: free
+    autoDeployTrigger: commit
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_DATABASE
+        value: postgres
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_SSLMODE
+        value: require
+      - key: SESSION_DRIVER
+        value: file
+      - key: SESSION_COOKIE
+        value: sucursal_session
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: CENTRAL_URL
+        sync: false
+      - key: NODE_API_KEY
+        sync: false
+      - key: NODE_CONFIG_ID
+        value: sucursal-render
