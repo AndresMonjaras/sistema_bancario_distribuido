@@ -6,4 +6,4 @@ Instalación: Node.js 22+, `npm ci`, copiar `.env.example` a `.env`, configurar 
 
 Vercel utiliza `vercel.json`; seleccionar `cajero` como raíz e ingresar las variables privadas en el panel de la plataforma. La aplicación no abre un puerto cuando corre en Vercel. Para producción se utiliza `COOKIE_SECURE=true`. Las sesiones, la configuración cifrada y los registros locales utilizan el proyecto PostgreSQL `Atm_Sucursales_eqm`.
 
-Contrato: `../entrega_examen/contratos/cajero.openapi.yaml`.
+Contrato: [OpenAPI del cajero](../contratos/cajero.openapi.yaml).

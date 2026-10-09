@@ -76,12 +76,11 @@ Organizamos los tres módulos en el repositorio [sistema_bancario_distribuido](h
 
 Nosotros abrimos la cuenta desde la máquina de sucursal, verificamos el saldo inicial en central, ingresamos al ATM y ejecutamos el retiro. Comprobamos el saldo final de $700.00 en el banco central y consultamos el historial con el depósito inicial y el retiro.
 
-La documentación funcional con capturas y pies de imagen quedó en [entrega_examen/README.md](entrega_examen/README.md). También generamos [la versión Word](entrega_examen/Documentacion_funcional.docx) y [la versión HTML](entrega_examen/Documentacion_funcional.html).
-
 ## Contratos y código
 
-- [Contrato de endpoints](entrega_examen/contratos/ENDPOINTS.md).
-- OpenAPI de cada nodo en `entrega_examen/contratos/`.
+- [OpenAPI del banco central](contratos/banco-central.openapi.yaml).
+- [OpenAPI de la sucursal](contratos/sucursal.openapi.yaml).
+- [OpenAPI del cajero](contratos/cajero.openapi.yaml).
 - `banco-central/`: Laravel y migraciones del núcleo.
 - `sucursal/`: Laravel y registro local de sucursal.
 - `cajero/`: Express, interfaz y configuración Vercel.

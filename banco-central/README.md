@@ -6,4 +6,4 @@ Instalación: `composer install`; copiar `.env.example` a `.env`, configurar Pos
 
 El panel registra nodos, emite sus API keys, asigna responsables y efectivo, consulta cuentas, bloquea cuentas/nodos y exporta reportes CSV. Las escrituras monetarias utilizan transacciones e idempotencia; el historial se protege mediante trigger.
 
-Contrato: `../entrega_examen/contratos/banco-central.openapi.yaml`.
+Contrato: [OpenAPI del banco central](../contratos/banco-central.openapi.yaml).

@@ -9,3 +9,6 @@
 .runtime/
 *.log
 **/.credentials*
+/docs/
+/entrega_examen/
+/scripts/DEPLOYMENT.md
