@@ -17,8 +17,8 @@ GitHub reconoció los commits de cada integrante con su perfil. Conservamos el [
 | Integrante y entorno | Nodo | Tecnología | Módulo | Responsabilidad |
 |---|---|---|---|---|
 | Andrés Monjaras — máquina central | Banco central | Laravel 12 / PHP 8.3 | `banco-central/` | Administrar nodos, responsables, claves, efectivo, cuentas e historial global |
-| Omar — máquina de sucursal, entorno WSL con usuario `hadoop` | Sucursal Centro | Laravel 12 / PHP 8.3 | `sucursal/` | Abrir cuentas, consultar movimientos y emitir reportes |
-| Dennis — máquina de cajero, entorno WSL con usuario `hadoop` | Cajero Principal | Express.js / Node.js | `cajero/` | Consultar saldo, retirar, depositar y transferir; verificar el efectivo local |
+| Omar — máquina de sucursal, entorno WSL | Sucursal Centro | Laravel 12 / PHP 8.3 | `sucursal/` | Abrir cuentas, consultar movimientos y emitir reportes |
+| Dennis — máquina de cajero, entorno WSL | Cajero Principal | Express.js / Node.js | `cajero/` | Consultar saldo, retirar, depositar y transferir; verificar el efectivo local |
 
 Cada servicio tuvo su configuración y proceso independientes. La sucursal y el cajero se autenticaron ante la API central mediante una clave de nodo. El banco central conservó la autoridad sobre los saldos; los nodos registraron sus operaciones locales en el segundo proyecto Supabase.
 
@@ -50,17 +50,17 @@ Nosotros utilizamos **dos proyectos Supabase independientes**:
 | `banco_central_eqm` | `users_accounts`, `transactions`, `nodes`, `cash_allocations` | Banco central |
 | `Atm_Sucursales_eqm` | `node_events`, `node_runtime`, `node_configurations`, `atm_sessions` | Sucursal y ATM |
 
-En el banco central persistimos los números de cuenta, titulares, PIN cifrado mediante hash, saldos, estados, nodos y transacciones. Cada operación monetaria bloqueó los registros afectados y actualizó el saldo, el efectivo y el historial dentro de una transacción PostgreSQL. Calculamos los montos en centavos para evitar errores por números decimales.
+En el banco central se almacenaron los números de cuenta, titulares, PIN cifrado mediante hash, saldos, estados, nodos y transacciones. Cada operación monetaria bloqueó los registros afectados y actualizó el saldo, el efectivo y el historial dentro de una transacción PostgreSQL. Calculamos los montos en centavos para evitar errores por números decimales.
 
-En el proyecto de ATM/Sucursal persistimos el identificador de la transacción central, el nodo local, la cuenta, el tipo, el monto y la fecha. El ATM también contó con persistencia de su efectivo, configuración cifrada y sesiones PostgreSQL para el despliegue serverless. Si falló el registro local después de una operación central exitosa, el servicio conservó la operación pendiente de auditoría local para no repetir el movimiento de dinero.
+En el proyecto de ATM/Sucursal almacenamos el identificador de la transacción central, el nodo local, la cuenta, el tipo, el monto y la fecha. El ATM también disponía de una cantidad de su efectivo, configuración cifrada y sesiones PostgreSQL para el despliegue serverless. Si falló el registro local después de una operación central exitosa, el servicio conservó la operación pendiente de auditoría local para no repetir el movimiento de dinero.
 
 Habilitamos RLS en las tablas bancarias y revocamos el acceso directo de los roles públicos `anon` y `authenticated`. Las credenciales PostgreSQL permanecieron en los servidores. Instalamos un trigger que rechazó modificaciones y eliminaciones de las transacciones centrales; cada transacción también conservó un identificador SHA-256 de integridad. Las API keys se guardaron mediante hash en el banco central. Habilitamos la publicación Realtime para cuentas y transacciones centrales; los paneles consultaron la API para mostrar los datos.
 
 ## Dónde y cómo utilizamos Vercel
 
-Preparamos **el ATM Express** para Vercel en el directorio `cajero/`. Incluimos el archivo `vercel.json` y exportamos la aplicación Express para ejecutarla como función. El servidor leyó la URL central, su API key y las credenciales desde variables de entorno; las sesiones y la configuración del ATM se persistieron en PostgreSQL para sobrevivir entre invocaciones.
+Preparamos **el ATM Express** para Vercel en el directorio `cajero/`. Incluimos el archivo `vercel.json` y exportamos la aplicación Express para ejecutarla como función. El servidor leyó la URL central, su API key y las credenciales desde variables de entorno; las sesiones y la configuración del ATM se almacenaron en PostgreSQL para sobrevivir entre invocaciones.
 
-La configuración de Vercel correspondió a importar este repositorio, elegir `cajero` como raíz y agregar las variables de `cajero/.env.example`. El banco central necesitó una URL HTTPS accesible desde Vercel. **El enlace público de Vercel quedó pendiente de despliegue y verificación.**
+La configuración de Vercel permitio importar este repositorio, elegir `cajero` como raíz y agregar las variables de `cajero/.env.example`. El banco central necesitó una URL HTTPS accesible desde Vercel. **El enlace público de Vercel quedó pendiente de despliegue y verificación.**
 
 ## Dónde y cómo contemplamos Coolify y Render
 
@@ -92,8 +92,8 @@ Los archivos `.env`, las claves y los datos de conexión se excluyeron del repos
 
 | Aplicación | Enlace / estado |
 |---|---|
-| Banco central | [Panel HTTPS](https://incurred-paper-occupational-isa.trycloudflare.com) — salud verificada con Supabase |
-| ATM en Vercel | Configuración preparada; publicación pendiente |
-| Sucursal en Render | Dockerfile y Blueprint preparados; publicación pendiente |
+| Banco central | [Panel HTTPS](https://incurred-paper-occupational-isa.trycloudflare.com) — estado verificado con Supabase |
+| ATM en Vercel | Configuración en Express.js y Base 'atm/sucursal_eqm|
+| Sucursal Centro | Dockerfile y Blueprint, despliegue con Render  |
 
-La dirección central fue temporal y requirió mantener activo el servicio en la máquina de Andrés.
+las direcciones hacia los servicios son:
