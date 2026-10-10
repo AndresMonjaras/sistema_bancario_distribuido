@@ -1,0 +1,13 @@
+scripts
+**/scripts
+*.py
+**/*.py
+docs
+entrega_examen
+assets/documentacion
+.runtime
+**/.runtime
+.env
+.env.*
+**/.env
+**/.env.*

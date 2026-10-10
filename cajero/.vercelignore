@@ -1,0 +1,12 @@
+/*
+!package.json
+!package-lock.json
+!vercel.json
+!src
+!public
+*.py
+**/*.py
+**/scripts
+**/.env
+**/.env.*
+**/.runtime
